@@ -60,4 +60,28 @@ public class CommentController {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Note", "id", commentId));
     }
+
+    /*
+    Store html code
+     */
+    private String html = "";
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String test(HttpServletResponse response) {
+        html = "";
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        List<Comment> comments = commentRepository.findAll();
+        for (Comment c : comments) {
+            if (c.getParentId() == null) {
+                html += "<div class='panel panel-primary'><div class='panel-heading'>By <b>" + c.getName() + "</b" +
+                        "></div>" +
+                        "<div class='panel-body'>" + c.getContent() + "</div><div class='panel-footer' align='right'>" +
+                        "<button type='button' class='btn btn-primary reply' id=" + c.getId() + ">Reply</button></div" +
+                        "> </div>";
+                parser(c.getId(), 0, true);
+            }
+        }
+        return html;
+    }
 }
