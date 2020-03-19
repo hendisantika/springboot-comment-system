@@ -1,9 +1,11 @@
 package com.hendisantika.springbootcommentsystem.controller;
 
+import com.hendisantika.springbootcommentsystem.exception.ResourceNotFoundException;
 import com.hendisantika.springbootcommentsystem.model.Comment;
 import com.hendisantika.springbootcommentsystem.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,5 +50,14 @@ public class CommentController {
     public Comment createComment(Comment comment, HttpServletResponse response) {
         response.addHeader("Access-Control-Allow-Origin", "*");
         return commentRepository.save(comment);
+    }
+
+    /*
+  Get a comment by id
+   */
+    @GetMapping("/comments/{id}")
+    public Comment getNoteById(@PathVariable(value = "id") Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", commentId));
     }
 }
