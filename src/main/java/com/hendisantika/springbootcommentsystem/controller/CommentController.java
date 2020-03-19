@@ -1,9 +1,15 @@
 package com.hendisantika.springbootcommentsystem.controller;
 
+import com.hendisantika.springbootcommentsystem.model.Comment;
 import com.hendisantika.springbootcommentsystem.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,4 +25,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
     @Autowired
     private CommentRepository commentRepository;
+
+    /*
+   Select all comments
+    */
+    @GetMapping("/comments")
+    @ResponseBody
+    public List<Comment> getAllComments(HttpServletResponse response) {
+        /*
+        Access cors
+         */
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return commentRepository.findAll();
+    }
 }
