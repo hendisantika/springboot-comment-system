@@ -2,6 +2,7 @@ package com.hendisantika.springbootcommentsystem.controller;
 
 import com.hendisantika.springbootcommentsystem.exception.ResourceNotFoundException;
 import com.hendisantika.springbootcommentsystem.model.Comment;
+import com.hendisantika.springbootcommentsystem.model.CustomCommentResult;
 import com.hendisantika.springbootcommentsystem.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,5 +84,40 @@ public class CommentController {
             }
         }
         return html;
+    }
+
+    /*
+    Recursive to construct html code
+     */
+    public void parser(Long parent_id, int level, boolean root) {
+
+        /*
+        //Recursive print the tree
+        String placeholder = " ";
+        for (int i=0; i<level; i++) {
+            placeholder += " ";
+        }
+        System.out.println(placeholder+parent_id);
+         */
+
+        if (!root) {
+            Comment comment = commentRepository.findById(parent_id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Note", "id", parent_id));
+
+            html += "<div class='panel panel-primary' style='margin-left:" + level * 48 + "px'>" +
+                    "<div class='panel-heading'>By <b>" + comment.getName() + "</b></div>" +
+                    "<div class='panel-body'>" + comment.getContent() + "</div><div class='panel-footer' " +
+                    "align='right'>" +
+                    "<button type='button' class='btn btn-primary reply' id=" + comment.getId() + ">Reply</button" +
+                    "></div> </div>";
+
+        }
+
+        List<CustomCommentResult> comments = commentRepository.findByParent(parent_id);
+        if (!comments.isEmpty()) {
+            for (CustomCommentResult comment : comments) {
+                parser(comment.getId(), level + 1, false);
+            }
+        }
     }
 }
