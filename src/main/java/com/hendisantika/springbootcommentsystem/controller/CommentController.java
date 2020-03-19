@@ -4,6 +4,7 @@ import com.hendisantika.springbootcommentsystem.model.Comment;
 import com.hendisantika.springbootcommentsystem.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,5 +38,15 @@ public class CommentController {
          */
         response.addHeader("Access-Control-Allow-Origin", "*");
         return commentRepository.findAll();
+    }
+
+    /*
+   Post a comment
+    */
+    @PostMapping("/comments")
+    @ResponseBody
+    public Comment createComment(Comment comment, HttpServletResponse response) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return commentRepository.save(comment);
     }
 }
