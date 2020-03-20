@@ -22,8 +22,9 @@ public class CustomCommentResult {
    Custom a CustomCommentResult class to select child nodes
    This class filed should to be json
    Sql statement:
-       "SELECT NEW  com.comments.commentsystem.Custom.CustomCommentResult(c.id, c.name, c.content, c.parent_id)" +
-           "FROM Comment as c WHERE parent_id = :parent_id"
+       "SELECT NEW  com.hendisantika.springbootcommentsystem.model.CustomCommentResult(c.id, c.name, c.content, c
+       .parentId)" +
+           "FROM Comment as c WHERE parentId = :parentId"
     */
     @JsonProperty("id")
     private Long id;
@@ -34,6 +35,6 @@ public class CustomCommentResult {
     @JsonProperty("content")
     private String content;
 
-    @JsonProperty("parent_id")
+    @JsonProperty("parentId")
     private Long parentId;
 }

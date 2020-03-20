@@ -89,7 +89,7 @@ public class CommentController {
     /*
     Recursive to construct html code
      */
-    public void parser(Long parent_id, int level, boolean root) {
+    public void parser(Long parentId, int level, boolean root) {
 
         /*
         //Recursive print the tree
@@ -97,12 +97,12 @@ public class CommentController {
         for (int i=0; i<level; i++) {
             placeholder += " ";
         }
-        System.out.println(placeholder+parent_id);
+        System.out.println(placeholder+parentId);
          */
 
         if (!root) {
-            Comment comment = commentRepository.findById(parent_id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Note", "id", parent_id));
+            Comment comment = commentRepository.findById(parentId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Note", "id", parentId));
 
             html += "<div class='panel panel-primary' style='margin-left:" + level * 48 + "px'>" +
                     "<div class='panel-heading'>By <b>" + comment.getName() + "</b></div>" +
@@ -113,7 +113,7 @@ public class CommentController {
 
         }
 
-        List<CustomCommentResult> comments = commentRepository.findByParent(parent_id);
+        List<CustomCommentResult> comments = commentRepository.findByParent(parentId);
         if (!comments.isEmpty()) {
             for (CustomCommentResult comment : comments) {
                 parser(comment.getId(), level + 1, false);

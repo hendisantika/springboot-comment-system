@@ -38,7 +38,7 @@ $(document).ready(function () {
     $(document).on('click', '.reply', function () {
         //Reply to this id
         var commentId = $(this).attr("id");
-        $('#parent_id').val(commentId);
+        $('#parentId').val(commentId);
         $('#name').focus();
 
     });
